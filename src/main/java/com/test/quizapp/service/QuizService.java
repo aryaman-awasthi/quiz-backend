@@ -73,22 +73,7 @@ public class QuizService {
             Optional<Quiz> quiz = quizRepository.findById(id);
             List<Question> questions = quiz.get().getQuestions();
 
-            int score = 0;
-
-            HashMap <Integer, String> correctAnswers = new HashMap<>();
-
-            for (Question question : questions) {
-                int questionId = question.getId();
-                String correctAnswer = question.getRightAnswer();
-
-                correctAnswers.put(questionId, correctAnswer);
-            }
-
-            for (QuizResponse quizResponse : quizResponses) {
-                if (quizResponse.getAnswer().equals(correctAnswers.get(quizResponse.getId()))) {
-                    score++;
-                }
-            }
+            int score = getScore(quizResponses, questions);
 
             return new ResponseEntity<>(score, HttpStatus.OK);
 
@@ -97,5 +82,25 @@ public class QuizService {
         }
 
         return new ResponseEntity<>(-1, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private static int getScore(List<QuizResponse> quizResponses, List<Question> questions) {
+        int score = 0;
+
+        HashMap <Integer, String> correctAnswers = new HashMap<>();
+
+        for (Question question : questions) {
+            int questionId = question.getId();
+            String correctAnswer = question.getRightAnswer();
+
+            correctAnswers.put(questionId, correctAnswer);
+        }
+
+        for (QuizResponse quizResponse : quizResponses) {
+            if (quizResponse.getAnswer().equals(correctAnswers.get(quizResponse.getId()))) {
+                score++;
+            }
+        }
+        return score;
     }
 }
