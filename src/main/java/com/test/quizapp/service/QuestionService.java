@@ -26,4 +26,10 @@ public class QuestionService {
         questionRepository.save(question);
         return "success";
     }
+
+    public String deleteQuestion(int id) {
+        questionRepository.deleteById(id);
+        return "success";
+    }
+
 }
