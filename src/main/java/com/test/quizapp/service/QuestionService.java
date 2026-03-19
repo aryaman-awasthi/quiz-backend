@@ -32,4 +32,19 @@ public class QuestionService {
         return "success";
     }
 
+    public Question updateQuestion(int id, Question question) {
+        Question existing = questionRepository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setCategory(question.getCategory());
+            existing.setDifficultylevel(question.getDifficultylevel());
+            existing.setQuestionTitle(question.getQuestionTitle());
+            existing.setOption1(question.getOption1());
+            existing.setOption2(question.getOption1());
+            existing.setOption3(question.getOption3());
+            existing.setOption4(question.getOption4());
+            existing.setRightAnswer(question.getRightAnswer());
+            return questionRepository.save(existing);
+        }
+        return null;
+    }
 }
